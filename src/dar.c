@@ -4,6 +4,7 @@
 
 int main(int argc, char** argv){
 	int i;
+	int st = 0;
 	for(i = 1; i < argc; i++){
 		int st = dar_cmd(argc - 1, argv[i]);
 		if(st != -1) return st;
@@ -24,5 +25,11 @@ int main(int argc, char** argv){
 		dar_printf(out, " x   Extract from archive$a40 w   Specify extract directory");
 		dar_printf(out, " t   Test archive$a40 o   Compress quality");
 	}
-	return 0;
+
+	DAR_CMD(create);
+	DAR_CMD(extract);
+	DAR_CMD(test);
+	DAR_CMD(info);
+
+	return -1;
 }

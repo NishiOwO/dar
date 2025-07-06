@@ -47,6 +47,8 @@ typedef signed long long i64;
 #endif
 #endif
 
+#define DAR_CMD(name) if((st = dar_cmd_ ## name()) != -1) return st;
+
 /* ver.c */
 extern const char* dar_version;
 
@@ -62,5 +64,11 @@ int dar_cmd(int total, const char* arg);
 
 /* printf.c */
 void dar_printf(FILE* out, const char* fmt, ...);
+
+/* commands */
+int dar_cmd_create(void);
+int dar_cmd_extract(void);
+int dar_cmd_test(void);
+int dar_cmd_info(void);
 
 #endif
