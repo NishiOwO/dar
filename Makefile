@@ -1,9 +1,12 @@
 CC = cc
-CFLAGS = -DDUMB_TERMINAL
+CFLAGS =
 LDFLAGS =
 LIBS = -lz
 
-OBJS = dar.o ver.o cmd.o printf.o
+# Does your terminal ignore \x08?
+#CFLAGS += -DDUMB_TERMINAL
+
+OBJS = dar.o ver.o cmd.o printf.o c_info.o c_create.o c_extract.o c_test.o
 
 EXEC =
 
