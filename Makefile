@@ -1,22 +1,22 @@
 CC = cc
-CFLAGS =
+CFLAGS = -DDUMB_TERMINAL
 LDFLAGS =
 LIBS = -lz
 
-OBJS = zar.o ver.o cmd.o printf.o
+OBJS = dar.o ver.o cmd.o printf.o
 
 EXEC =
 
 .PHONY: all clean
 .SUFFIXES: .c .o
 
-all: zar$(EXEC)
+all: dar$(EXEC)
 
-zar$(EXEC): $(OBJS)
+dar$(EXEC): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 .c.o:
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f zar zar.exe *.o
+	rm -f dar dar.exe *.o

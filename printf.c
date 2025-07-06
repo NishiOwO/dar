@@ -6,7 +6,7 @@
 
 #define WIDTH 79
 
-void zar_printf(FILE* out, const char* fmt, ...){
+void dar_printf(FILE* out, const char* fmt, ...){
 	char output[WIDTH + 1];
 	char save[WIDTH + 1];
 	int in_save = 0;

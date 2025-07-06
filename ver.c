@@ -1,3 +1,3 @@
 #include "common.h"
 
-const char* zar_version = "0.00";
+const char* dar_version = "0.00";

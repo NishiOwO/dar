@@ -4,14 +4,19 @@
 #include <stdio.h>
 
 /* ver.c */
-extern const char* zar_version;
+extern const char* dar_version;
 
 /* cmd.c */
-extern int zar_show_help;
+extern int dar_show_help;
+extern int dar_create;
+extern int dar_extract;
+extern int dar_test;
+extern int dar_info;
+extern const char* dar_input;
 
-int zar_cmd(const char* arg);
+int dar_cmd(int total, const char* arg);
 
 /* printf.c */
-void zar_printf(FILE* out, const char* fmt, ...);
+void dar_printf(FILE* out, const char* fmt, ...);
 
 #endif
