@@ -24,4 +24,5 @@ int main(int argc, char** argv){
 		dar_printf(out, " x   Extract from archive$a40 w   Specify extract directory");
 		dar_printf(out, " t   Test archive$a40 o   Compress quality");
 	}
+	return 0;
 }
