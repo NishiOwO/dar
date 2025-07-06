@@ -6,7 +6,7 @@ LIBS = -lz
 # Does your terminal ignore \x08?
 #CFLAGS += -DDUMB_TERMINAL
 
-OBJS = dar.o ver.o cmd.o printf.o c_info.o c_create.o c_extract.o c_test.o
+OBJS = src/dar.o src/ver.o src/cmd.o src/printf.o src/c_info.o src/c_create.o src/c_extract.o src/c_test.o
 
 EXEC =
 
@@ -22,4 +22,4 @@ dar$(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f dar dar.exe *.o
+	rm -f dar dar.exe src/*.o
