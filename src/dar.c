@@ -2,6 +2,10 @@
 
 #include "common.h"
 
+#define CMD(name) if((st = dar_cmd_ ## name()) != -1) return st;
+
+FILE* dar_io = NULL;
+
 int main(int argc, char** argv){
 	int i;
 	int st = 0;
@@ -15,9 +19,12 @@ int main(int argc, char** argv){
 #ifdef DUMB_TERMINAL
 		dar_printf(out, "  Dumb terminal output support integrated");
 #endif
+#ifdef HAS_DIRENT
+		dar_printf(out, "  Uses dirent.h");
+#endif
 
 		dar_printf(out, "");
-		dar_printf(out, "Usage: $v [-]<commands>[<options>] [-<options> ...] archive_file", argv[0]);
+		dar_printf(out, "Usage: $v [-]<commands>[<options>] [-<options> ...] archive_file [file...]", argv[0]);
 		dar_printf(out, "  commands:$a12[cxt]");
 		dar_printf(out, "  options:$a12[v[w=<dir>][o=[0123456789]]]");
 		dar_printf(out, "commands:$a40options:");
@@ -26,10 +33,10 @@ int main(int argc, char** argv){
 		dar_printf(out, " t   Test archive$a40 o   Compress quality");
 	}
 
-	DAR_CMD(create);
-	DAR_CMD(extract);
-	DAR_CMD(test);
-	DAR_CMD(info);
+	CMD(create);
+	CMD(extract);
+	CMD(test);
+	CMD(info);
 
 	return -1;
 }

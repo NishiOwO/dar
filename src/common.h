@@ -47,7 +47,14 @@ typedef signed long long i64;
 #endif
 #endif
 
-#define DAR_CMD(name) if((st = dar_cmd_ ## name()) != -1) return st;
+enum dar_chunktypes {
+	DAR_CHUNK_FILE = 0,
+	DAR_CHUNK_DIRECTORY,
+	DAR_CHUNK_END = 0xff
+};
+
+/* dar.c */
+extern FILE* dar_io;
 
 /* ver.c */
 extern const char* dar_version;
