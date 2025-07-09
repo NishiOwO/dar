@@ -81,3 +81,13 @@ int dar_get_info(const char* path, dar_header_t* hdr) {}
 #else
 #error "what platform are you targetting??? please implement dar_get_info"
 #endif
+
+#if defined(HAS_SYS_STAT_H)
+void dar_mkdir(const char* path, u16 mode){
+	mkdir(path, mode);
+}
+#elif defined(HAS_DIRECT_H)
+void dar_mkdir(const char* path, u16 mode){
+	_mkdir(path);
+}
+#endif

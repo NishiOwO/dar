@@ -37,7 +37,6 @@ int main(int argc, char** argv) {
 
 	CMD(create);
 	CMD(extract);
-	CMD(test);
 	CMD(info);
 
 	return -1;

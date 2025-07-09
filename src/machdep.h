@@ -13,6 +13,7 @@
 
 #ifdef _WIN32
 #define HAS_WINDOWS_H
+#define HAS_DIRECT_H
 #endif
 
 #ifdef _WIN32

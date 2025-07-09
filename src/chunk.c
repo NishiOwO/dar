@@ -1,7 +1,5 @@
 #include "common.h"
 
-#define CHUNKSIZE 65536
-
 void dar_write(const char* path) {
 	dar_header_t hdr;
 	jmp_buf	     err;
@@ -11,7 +9,7 @@ void dar_write(const char* path) {
 
 	if(setjmp(err)) {
 		printf("failed\n");
-		return;
+		exit(1);
 	}
 
 	memset(&hdr, 0, sizeof(hdr));
@@ -29,13 +27,13 @@ void dar_write(const char* path) {
 				dar_closedir(dir);
 			}
 		} else {
-			u8	 in[CHUNKSIZE];
-			u8	 out[CHUNKSIZE];
+			u8	 in[DAR_CHUNKSIZE];
+			u8	 out[DAR_CHUNKSIZE];
 			z_stream strm;
 			u32	 total	 = 0;
 			u32	 totalin = 0;
 			int	 flush;
-			int	 have;
+			u32	 have;
 			u8*	 buf;
 			int	 i;
 			char	 progress[9];
@@ -59,15 +57,15 @@ void dar_write(const char* path) {
 				longjmp(err, 0);
 			}
 			do {
-				strm.avail_in = fread(in, 1, CHUNKSIZE, src);
+				strm.avail_in = fread(in, 1, DAR_CHUNKSIZE, src);
 				totalin += strm.avail_in;
 				flush	     = feof(src) ? Z_FINISH : Z_NO_FLUSH;
 				strm.next_in = in;
 				do {
-					strm.avail_out = CHUNKSIZE;
+					strm.avail_out = DAR_CHUNKSIZE;
 					strm.next_out  = out;
 					deflate(&strm, flush);
-					have = CHUNKSIZE - strm.avail_out;
+					have = DAR_CHUNKSIZE - strm.avail_out;
 					total += have;
 					buf = malloc(have);
 
@@ -84,6 +82,7 @@ void dar_write(const char* path) {
 					arrput(bufsizes, have);
 				} while(strm.avail_out == 0);
 			} while(flush != Z_FINISH);
+			deflateEnd(&strm);
 			hdr.size = dar_u32be(total);
 
 #ifdef DUMB_TERMINAL

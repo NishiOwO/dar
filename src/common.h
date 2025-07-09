@@ -48,6 +48,8 @@ typedef signed long long i64;
 #include "machdep.h"
 #include "cominc.h"
 
+#define DAR_CHUNKSIZE 65536
+
 enum dar_chunktypes {
 	DAR_CHUNK_FILE = 0,
 	DAR_CHUNK_DIRECTORY,
@@ -97,11 +99,11 @@ int   dar_get_info(const char* path, dar_header_t* hdr);
 void* dar_opendir(const char* path);
 void  dar_closedir(void* handle);
 char* dar_readdir(void* handle);
+void dar_mkdir(const char* path, u16 mode);
 
 /* commands */
 int dar_cmd_create(void);
 int dar_cmd_extract(void);
-int dar_cmd_test(void);
 int dar_cmd_info(void);
 
 #ifdef ENDIAN_IMPLEMENTATION

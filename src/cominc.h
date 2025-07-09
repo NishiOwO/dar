@@ -28,6 +28,10 @@
 #include <grp.h>
 #endif
 
+#ifdef HAS_DIRECT_H
+#include <direct.h>
+#endif
+
 #include <zlib.h>
 #include <setjmp.h>
 

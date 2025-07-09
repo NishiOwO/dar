@@ -7,7 +7,7 @@ LIBS = -lz
 # CFLAGS += -DDUMB_TERMINAL
 
 OBJS = src/dar.o src/ver.o src/cmd.o src/io.o src/printf.o src/chunk.o src/endian.o
-OBJS += src/c_info.o src/c_create.o src/c_extract.o src/c_test.o
+OBJS += src/c_info.o src/c_create.o src/c_extract.o
 OBJS += src/ds.o
 
 EXEC =
