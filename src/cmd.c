@@ -7,6 +7,7 @@ int	     dar_test	   = 0;
 int	     dar_info	   = 0;
 const char*  dar_input	   = NULL;
 const char** dar_files	   = NULL;
+int	     dar_quality   = 2;
 
 static int count = 0;
 

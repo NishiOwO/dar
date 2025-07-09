@@ -45,33 +45,8 @@ typedef signed long long i64;
 #endif
 #endif
 
-#if defined(__WATCOMC__) || defined(__unix__)
-#define HAS_DIRENT_H
-#define HAS_SYS_STAT_H
-#endif
-
-#ifdef _WIN32
-#define HAS_WINDOWS_H
-#endif
-
-#include "stb_ds.h"
-
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#ifdef HAS_WINDOWS_H
-#include <windows.h>
-#endif
-
-#ifdef HAS_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-
-#ifdef HAS_DIRENT_H
-#include <dirent.h>
-#endif
+#include "machdep.h"
+#include "cominc.h"
 
 enum dar_chunktypes {
 	DAR_CHUNK_FILE = 0,
@@ -82,12 +57,13 @@ enum dar_chunktypes {
 #pragma pack(1)
 typedef struct dar_header {
 	u8   type;
+	char name[256];
 	u16  mode;
-	u32  size;
 	char user[128];
-	u32  uid;
+	u16  uid;
 	char group[128];
-	u32  gid;
+	u16  gid;
+	u32  size; /* this is size after compression */
 } dar_header_t;
 #pragma pack()
 
@@ -105,6 +81,7 @@ extern int	    dar_test;
 extern int	    dar_info;
 extern const char*  dar_input;
 extern const char** dar_files;
+extern int	    dar_quality;
 
 int dar_cmd(int total, const char* arg);
 
@@ -113,14 +90,42 @@ void dar_printf(FILE* out, const char* fmt, ...);
 
 /* chunk.c */
 void dar_write(const char* path);
+void dar_read(dar_header_t* hdr);
 
-/* dir.c */
-int dar_is_dir(const char* path);
+/* io.c */
+int   dar_get_info(const char* path, dar_header_t* hdr);
+void* dar_opendir(const char* path);
+void  dar_closedir(void* handle);
+char* dar_readdir(void* handle);
 
 /* commands */
 int dar_cmd_create(void);
 int dar_cmd_extract(void);
 int dar_cmd_test(void);
 int dar_cmd_info(void);
+
+#ifdef ENDIAN_IMPLEMENTATION
+#define DAR_BE(type) \
+	type dar_##type##be(type n) { \
+		u16 s = 1; \
+		if((*(u8*)&s) == 1) { \
+			/* little endian */ \
+			type r = 0; \
+			int  i; \
+			for(i = 0; i < sizeof(n); i++) { \
+				r = r << 8; \
+				r = r | (n & 0xff); \
+				n = n >> 8; \
+			} \
+			return r; \
+		} \
+		return n; \
+	}
+#else
+#define DAR_BE(type) type dar_##type##be(type n);
+#endif
+
+DAR_BE(u32)
+DAR_BE(u16)
 
 #endif

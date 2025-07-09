@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 		dar_printf(out, "commands:$a40options:");
 		dar_printf(out, " c   Create archive$a40 v   Verbose");
 		dar_printf(out, " x   Extract from archive$a40 w   Specify extract directory");
-		dar_printf(out, " t   Test archive$a40 o   Compress quality");
+		dar_printf(out, " $a40 o   Compress quality");
 		return 0;
 	}
 

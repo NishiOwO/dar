@@ -20,6 +20,10 @@ void dar_printf(FILE* out, const char* fmt, ...) {
 				current[strlen(current)] = fmt[i];
 			} else if(c == 'v') {
 				strcat(current, va_arg(va, char*));
+			} else if(c == 'n') {
+				char buffer[512];
+				sprintf(buffer, "%d", va_arg(va, int));
+				strcat(current, buffer);
 			} else if(c == 's') {
 				memset(save, 0, WIDTH + 1);
 				in_save = 1;
