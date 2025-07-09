@@ -1,11 +1,12 @@
 #include "common.h"
 
-int	    dar_show_help = 1;
-int	    dar_create	  = 0;
-int	    dar_extract	  = 0;
-int	    dar_test	  = 0;
-int	    dar_info	  = 0;
-const char* dar_input	  = NULL;
+int	     dar_show_help = 1;
+int	     dar_create	   = 0;
+int	     dar_extract   = 0;
+int	     dar_test	   = 0;
+int	     dar_info	   = 0;
+const char*  dar_input	   = NULL;
+const char** dar_files	   = NULL;
 
 static int count = 0;
 
@@ -41,6 +42,8 @@ int dar_cmd(int total, const char* arg) {
 		if(arg[0] == '-') {
 		} else if(dar_input == NULL) {
 			dar_input = arg;
+		} else {
+			arrput(dar_files, arg);
 		}
 	}
 	count++;

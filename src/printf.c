@@ -1,7 +1,3 @@
-#include <stdarg.h>
-#include <string.h>
-#include <stdio.h>
-
 #include "common.h"
 
 #define WIDTH 79

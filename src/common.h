@@ -1,8 +1,6 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include <stdio.h>
-
 #ifdef __STDC_VERSION__
 #if __STDC_VERSION__ >= 199901L
 #define HAS_C99
@@ -47,11 +45,51 @@ typedef signed long long i64;
 #endif
 #endif
 
+#if defined(__WATCOMC__) || defined(__unix__)
+#define HAS_DIRENT_H
+#define HAS_SYS_STAT_H
+#endif
+
+#ifdef _WIN32
+#define HAS_WINDOWS_H
+#endif
+
+#include "stb_ds.h"
+
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#ifdef HAS_WINDOWS_H
+#include <windows.h>
+#endif
+
+#ifdef HAS_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+
+#ifdef HAS_DIRENT_H
+#include <dirent.h>
+#endif
+
 enum dar_chunktypes {
 	DAR_CHUNK_FILE = 0,
 	DAR_CHUNK_DIRECTORY,
 	DAR_CHUNK_END = 0xff
 };
+
+#pragma pack(1)
+typedef struct dar_header {
+	u8   type;
+	u16  mode;
+	u32  size;
+	char user[128];
+	u32  uid;
+	char group[128];
+	u32  gid;
+} dar_header_t;
+#pragma pack()
 
 /* dar.c */
 extern FILE* dar_io;
@@ -60,17 +98,24 @@ extern FILE* dar_io;
 extern const char* dar_version;
 
 /* cmd.c */
-extern int	   dar_show_help;
-extern int	   dar_create;
-extern int	   dar_extract;
-extern int	   dar_test;
-extern int	   dar_info;
-extern const char* dar_input;
+extern int	    dar_show_help;
+extern int	    dar_create;
+extern int	    dar_extract;
+extern int	    dar_test;
+extern int	    dar_info;
+extern const char*  dar_input;
+extern const char** dar_files;
 
 int dar_cmd(int total, const char* arg);
 
 /* printf.c */
 void dar_printf(FILE* out, const char* fmt, ...);
+
+/* chunk.c */
+void dar_write(const char* path);
+
+/* dir.c */
+int dar_is_dir(const char* path);
 
 /* commands */
 int dar_cmd_create(void);

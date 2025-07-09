@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <assert.h>
-
 #include "common.h"
 
 #define CMD(name) \
@@ -20,9 +17,6 @@ int main(int argc, char** argv) {
 		dar_printf(out, "DAr manager version $v$sCopyright(c) Nishi, 2025.$r", dar_version);
 #ifdef DUMB_TERMINAL
 		dar_printf(out, "  Dumb terminal output support integrated");
-#endif
-#ifdef HAS_DIRENT
-		dar_printf(out, "  Uses dirent.h");
 #endif
 
 		dar_printf(out, "");

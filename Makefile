@@ -6,10 +6,9 @@ LIBS = -lz
 # Does your terminal ignore \x08?
 #CFLAGS += -DDUMB_TERMINAL
 
-# Do you have dirent.h?
-CFLAGS += -DHAS_DIRENT
-
-OBJS = src/dar.o src/ver.o src/cmd.o src/dir.o src/printf.o src/c_info.o src/c_create.o src/c_extract.o src/c_test.o
+OBJS = src/dar.o src/ver.o src/cmd.o src/dir.o src/printf.o src/chunk.o
+OBJS += src/c_info.o src/c_create.o src/c_extract.o src/c_test.o
+OBJS += src/ds.o
 
 EXEC =
 
