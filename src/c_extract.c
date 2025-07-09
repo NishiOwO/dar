@@ -18,47 +18,50 @@ int dar_cmd_extract(void) {
 		if(hdr.type == DAR_CHUNK_END) break;
 
 		memcpy(name, hdr.name, sizeof(hdr.name));
-		if(hdr.type == DAR_CHUNK_FILE){
+		if(hdr.type == DAR_CHUNK_FILE) {
 			z_stream strm;
-			u32 size = hdr.size;
-			u8 in[DAR_CHUNKSIZE];
-			u8 out[DAR_CHUNKSIZE];
-			u32 rdsz;
-			int ret;
-			u32 have;
+			u32	 size = hdr.size;
+			u8	 in[DAR_CHUNKSIZE];
+			u8	 out[DAR_CHUNKSIZE];
+			u32	 rdsz;
+			int	 ret;
+			u32	 have;
+			FILE*	 f = fopen(name, "wb");
 
 			printf("%s... ", name);
 			fflush(stdout);
 
-			strm.zalloc = Z_NULL;
-			strm.zfree = Z_NULL;
-			strm.opaque = Z_NULL;
+			strm.zalloc   = Z_NULL;
+			strm.zfree    = Z_NULL;
+			strm.opaque   = Z_NULL;
 			strm.avail_in = 0;
-			strm.next_in = Z_NULL;
-			if(inflateInit(&strm) != Z_OK){
+			strm.next_in  = Z_NULL;
+			if(inflateInit(&strm) != Z_OK) {
 				printf("failed\n");
-				exit(1);
+				return 1;
 			}
-			do{
-				rdsz = size < DAR_CHUNKSIZE ? size : DAR_CHUNKSIZE;
+			do {
+				rdsz	      = size < DAR_CHUNKSIZE ? size : DAR_CHUNKSIZE;
 				strm.avail_in = fread(in, 1, rdsz, dar_io);
-				strm.next_in = in;
+				strm.next_in  = in;
 				do {
 					strm.avail_out = DAR_CHUNKSIZE;
-					strm.next_out = out;
-					ret = inflate(&strm, Z_NO_FLUSH);
-					if(ret == Z_NEED_DICT || ret == Z_DATA_ERROR || ret == Z_MEM_ERROR){
+					strm.next_out  = out;
+					ret	       = inflate(&strm, Z_NO_FLUSH);
+					if(ret == Z_NEED_DICT || ret == Z_DATA_ERROR || ret == Z_MEM_ERROR) {
 						inflateEnd(&strm);
 						printf("failed\n");
-						exit(1);
+						return 1;
 					}
 					have = DAR_CHUNKSIZE - strm.avail_out;
-				}while(strm.avail_out == 0);
-			}while(ret != Z_STREAM_END);
+					fwrite(out, 1, have, f);
+				} while(strm.avail_out == 0);
+			} while(ret != Z_STREAM_END);
 			inflateEnd(&strm);
 			printf("\n");
-		}else{
-			if(hdr.type == DAR_CHUNK_DIRECTORY){
+			fclose(f);
+		} else {
+			if(hdr.type == DAR_CHUNK_DIRECTORY) {
 				printf("%s... ", name);
 				fflush(stdout);
 				dar_mkdir(name, hdr.mode);

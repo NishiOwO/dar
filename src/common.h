@@ -99,7 +99,7 @@ int   dar_get_info(const char* path, dar_header_t* hdr);
 void* dar_opendir(const char* path);
 void  dar_closedir(void* handle);
 char* dar_readdir(void* handle);
-void dar_mkdir(const char* path, u16 mode);
+void  dar_mkdir(const char* path, u16 mode);
 
 /* commands */
 int dar_cmd_create(void);
